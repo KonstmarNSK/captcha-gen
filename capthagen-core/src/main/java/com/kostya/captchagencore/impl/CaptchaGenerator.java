@@ -142,7 +142,13 @@ public final class CaptchaGenerator {
         g.drawGlyphVector(glyphVector, startX, startY);
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    static {
+        for(int i=0; i< THREAD_COUNT; i++){
+            CAPTCHA_GENERATING_THREAD_POOL.execute(new GenerateJob());
+        }
+    }
+
+    /*public static void main(String[] args) throws InterruptedException, IOException {
         final byte[] nextLine = "\n".getBytes(Charset.forName("utf-8"));
 
         for(int i=0; i< THREAD_COUNT; i++){
@@ -208,7 +214,7 @@ public final class CaptchaGenerator {
             returnArray(packet);
         }
 
-    }
+    }*/
 
     private static byte[] getPacket(ArrayBlockingQueue<byte[]>[] queues){
         int randomIndex = RND.nextInt(queues.length);
